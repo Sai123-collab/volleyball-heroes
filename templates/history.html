@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Match History</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+
+body {
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    font-family: Segoe UI, sans-serif;
+    color: white;
+}
+
+/* HEADER */
+.page-header {
+    background: #111;
+    padding: 15px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.6);
+}
+
+/* MATCH CARD */
+.match-card {
+    background: #1b1b1b;
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.5);
+}
+
+/* WINNER BADGE */
+.win-badge {
+    background: linear-gradient(135deg,#00c853,#64dd17);
+    color: black;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+/* TEAM TEXT */
+.team-text {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #111;
+    display: flex;
+    justify-content: space-around;
+    padding: 8px;
+}
+
+.bottom-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    text-align: center;
+}
+
+.bottom-nav i {
+    font-size: 18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container mt-3 mb-5">
+
+<!-- HEADER -->
+
+<div class="page-header">
+<h3>📊 Match History</h3>
+</div>
+
+<!-- MATCH LIST -->
+
+{% for m in matches %}
+
+<div class="match-card">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+
+<div class="team-text">
+{{m[1]}} <span class="text-warning">vs</span> {{m[2]}}
+</div>
+
+<small class="text-secondary">
+🗓 {{m[4]}}
+</small>
+
+</div>
+
+<div>
+<span class="win-badge">
+🏆 {{m[3]}}
+</span>
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<a href="/">
+<i class="bi bi-house"></i><br>Home
+</a>
+
+<a href="/leaderboard">
+<i class="bi bi-trophy"></i><br>Rank
+</a>
+
+<a href="/live">
+<i class="bi bi-broadcast"></i><br>Live
+</a>
+
+</div>
+
+</body>
+</html>

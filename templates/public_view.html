@@ -1,0 +1,32 @@
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+  YOUR_CONFIG_HERE
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+db.ref("live_match").on("value", (snapshot) => {
+
+    const data = snapshot.val();
+
+    if(data){
+
+        document.getElementById("score").innerHTML =
+        `${data.teamA} ${data.scoreA} - ${data.scoreB} ${data.teamB}`;
+
+        document.getElementById("setinfo").innerHTML =
+        `Set ${data.current_set} | Sets ${data.setA}-${data.setB}`;
+
+        document.getElementById("serve").innerHTML =
+        `Serving: ${data.serve}`;
+    }
+
+});
+
+</script>
