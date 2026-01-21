@@ -3,6 +3,8 @@ import sqlite3
 from datetime import datetime
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
+import os
+import json
 
 # Firebase
 import firebase_admin
@@ -11,14 +13,24 @@ from firebase_admin import credentials, db
 app = Flask(__name__)
 app.secret_key = "volleyball"
 
-# ---------------- FIREBASE INIT ----------------
 
-cred = credentials.Certificate("firebase_key.json")
+# ---------------- FIREBASE INIT (RENDER SAFE) ----------------
+
+firebase_key = os.environ.get("FIREBASE_KEY")
+
+if not firebase_key:
+    raise ValueError("FIREBASE_KEY environment variable not set")
+
+firebase_json = json.loads(firebase_key)
+
+cred = credentials.Certificate(firebase_json)
 
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://volleyball-heroes-live-default-rtdb.firebaseio.com/'
 })
+
 # ⚠ Replace with YOUR realtime database URL
+
 
 # ---------------- HOME ----------------
 
@@ -237,7 +249,6 @@ def save_match(winner):
             best_score = score
             mvp = player
 
-        # Save match stats
         c.execute("""
         INSERT INTO match_stats
         (match_id,player,team,points,aces,attacks,blocks,digs,errors)
@@ -246,7 +257,6 @@ def save_match(winner):
               data["points"], data["aces"], data["attacks"],
               data["blocks"], data["digs"], data["errors"]))
 
-        # Career stats
         c.execute("INSERT OR IGNORE INTO players(name,team) VALUES(?,?)", (player, team))
 
         c.execute("""
@@ -262,7 +272,6 @@ def save_match(winner):
         """, (data["points"], data["aces"], data["attacks"],
               data["blocks"], data["digs"], data["errors"], player))
 
-    # MVP update
     c.execute("UPDATE players SET mvp = mvp + 1 WHERE name=?", (mvp,))
 
     conn.commit()
@@ -360,5 +369,6 @@ def reset():
 
 
 # ---------------- RUN ----------------
+
 if __name__ == "__main__":
     app.run()
